@@ -6,13 +6,15 @@ app = Flask('EmotionDetectionSystem')
 @app.route('/emotionDetector')
 def detect_emotion():
     text_to_analyze = request.args.get('textToAnalyze')
-    
+    status_code = 200
     result = emotion_detector(text_to_analyze)
     string_result = f'For the given statement, the system response is'
     for key, value in result.items():
         if (key == 'dominant_emotion'):
             continue
         string_result += f" '{key}': {value},"
+    if not result.get('dominant_emotion'):
+        return "Invalid text! Please try again!"
     string_result += f" and the dominant emotion is {result['dominant_emotion']}."
     return string_result
 

@@ -15,6 +15,14 @@ def emotion_detector(text_to_analyze: str) -> str:
     """
     input_json = {'raw_document': {'text': text_to_analyze}}
     response = requests.post(URL, json=input_json, headers=HEADERS)
+    if response.status_code != 200:
+        return {
+            'joy': None,
+            'anger': None,
+            'fear': None,
+            'sadness': None,
+            'disgust': None,
+        }
     response = json.loads(response.text)
     response = {
         key: value for key, value in response['emotionPredictions'][0]['emotion'].items()
